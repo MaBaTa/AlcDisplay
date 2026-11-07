@@ -1,0 +1,149 @@
+[General]
+decode_signals=1
+meta_objs=2
+views=2
+
+[D0]
+color=4279638298
+conv_options=0
+conversion_type=0
+enabled=true
+name=PD4 (Bit0)
+
+[D1]
+color=4287582722
+conv_options=0
+conversion_type=0
+enabled=true
+name=PD5 (Bit1)
+
+[D2]
+color=4291559424
+conv_options=0
+conversion_type=0
+enabled=true
+name=PD6 (Bit2)
+
+[D3]
+color=4294277376
+conv_options=0
+conversion_type=0
+enabled=true
+name=PD7 (Bit3)
+
+[D4]
+color=4293776384
+conv_options=0
+conversion_type=0
+enabled=true
+name=PF0
+
+[D5]
+color=4285780502
+conv_options=0
+conversion_type=0
+enabled=true
+name=PF1
+
+[D6]
+color=4281623972
+conv_options=0
+conversion_type=0
+enabled=true
+name=PF2
+
+[D7]
+color=4285878395
+conv_options=0
+conversion_type=0
+enabled=false
+name=D7
+
+[decode_signal0]
+channel0\initial_pin_state=2
+channel0\name=CLK
+channel1\assigned_signal_name=PD4 (Bit0)
+channel1\initial_pin_state=2
+channel1\name=D0
+channel2\assigned_signal_name=PD5 (Bit1)
+channel2\initial_pin_state=2
+channel2\name=D1
+channel3\assigned_signal_name=PD6 (Bit2)
+channel3\initial_pin_state=2
+channel3\name=D2
+channel4\assigned_signal_name=PD7 (Bit3)
+channel4\initial_pin_state=2
+channel4\name=D3
+channel5\initial_pin_state=2
+channel5\name=D4
+channel6\initial_pin_state=2
+channel6\name=D5
+channel7\initial_pin_state=2
+channel7\name=D6
+channel8\initial_pin_state=2
+channel8\name=D7
+channels=9
+color=4281510450
+conv_options=0
+conversion_type=0
+decoder0\ann_class0\visible=true
+decoder0\ann_class1\visible=true
+decoder0\id=parallel
+decoder0\option0\name=endianness
+decoder0\option0\type=s
+decoder0\option0\value=@ByteArray(big\0)
+decoder0\option1\name=wordsize
+decoder0\option1\type=x
+decoder0\option1\value=@ByteArray(\0\0\0\0\0\0\0\0)
+decoder0\options=2
+decoder0\row0\visible=true
+decoder0\row1\visible=true
+decoder0\visible=true
+decoders=1
+enabled=true
+name=Parallel 0-3
+
+[meta_obj0]
+assoc_view=0
+end_time=22 serialization::archive 19 0 0 0 0 46591377 42445506 68735362 84614094 79567185 76344498 -8 0 0 6
+start_time=22 serialization::archive 19 0 0 0 0 15258889 78058974 13962148 36125584 58187953 76344498 -8 0 0 6
+type=selection
+
+[meta_obj1]
+assoc_view=1
+end_time=22 serialization::archive 19 0 0 0 0 1 61819074 99999999 55058 78798430 78553676 0 0 0 6
+start_time=22 serialization::archive 19 0 0 0 0 1 61648674 99999999 72260411 59592568 87435913 0 0 0 6
+type=selection
+
+[view0]
+D0\trace_height=36
+D1\trace_height=36
+D2\trace_height=36
+D3\trace_height=36
+D4\trace_height=36
+D5\trace_height=36
+D6\trace_height=36
+D7\trace_height=36
+offset=22 serialization::archive 19 0 0 0 0 1226634 64937766 61263532 87442323 2344067 23655502 -8 1 0 6
+scale=0.000399649077090119
+segment_display_mode=3
+splitter_state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\0p\0\0\a\t\x1\0\0\0\x1\x1\0\0\0\x1\0)
+v_offset=-188
+zero_offset=22 serialization::archive 19 0 0 0 0 0 0 0 0 0 0 0 0 0 6
+
+[view1]
+D0\trace_height=36
+D1\trace_height=36
+D2\trace_height=36
+D3\trace_height=36
+D4\trace_height=36
+D5\trace_height=36
+D6\trace_height=36
+D7\trace_height=36
+offset=22 serialization::archive 19 0 0 0 0 0 0 0 0 0 0 0 0 0 6
+scale=0.008365381818181819
+segment_display_mode=3
+splitter_state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\0p\0\0\a\t\x1\0\0\0\x1\x1\0\0\0\x1\0)
+type=0
+v_offset=213
+zero_offset=22 serialization::archive 19 0 0 0 0 0 0 0 0 0 0 0 0 0 6
