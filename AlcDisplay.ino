@@ -1,6 +1,6 @@
 
 #include "AlcDisplay.h"
-AlcDisplay display(22 /*Bit0*/, 23 /*Bit1*/, 24 /*Bit2*/, 25 /*Bit3*/, 26 /*strobeA*/, 28 /*strobeB*/, 27 /*cmd*/, 29 /*reset*/);
+AlcDisplay display(PIN_PD4 /*Bit0*/, PIN_PD5 /*Bit1*/, PIN_PD6 /*Bit2*/, PIN_PD7 /*Bit3*/, PIN_PF0 /*strobeA*/, PIN_PF2 /*strobeB*/, PIN_PF1 /*cmd*/, PIN_PF3 /*reset*/);
 
 void setup() {
   Serial.begin(115200);

@@ -103,6 +103,7 @@ class AlcDisplay
   public:
     // Constructor
     AlcDisplay(uint8_t _d0, uint8_t _d1, uint8_t _d2, uint8_t _d3, uint8_t _strobeA, uint8_t _strobeB, uint8_t _cmd, uint8_t _rst);
+    AlcDisplay(); //For faster direct Control with native PD4,PD5,PD6,PD7,PF0,PF2,PF1,PF3 for the ALC Controller
 
     // Basic
     void reset();
@@ -130,7 +131,7 @@ class AlcDisplay
     
     // GPIO Control
     uint8_t d0, d1, d2, d3, strobeA, strobeB, cmd, rst;
-    bool inStrobe = false, inHighStrobe = false; // >>sould only be accessed by GPIO Control<<<
+    bool inStrobe = false, inHighStrobe = false, native = false; // >>sould only be accessed by GPIO Control<<<
     
     void initPins();
     void setNibble(uint8_t _nibble);

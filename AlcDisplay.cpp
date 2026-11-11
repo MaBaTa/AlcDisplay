@@ -25,6 +25,24 @@ AlcDisplay::AlcDisplay(uint8_t _d0, uint8_t _d1, uint8_t _d2, uint8_t _d3, uint8
 }
 
 /**
+ * Constructor for AlcDisplay
+ * See Documentation for more info
+ */
+AlcDisplay::AlcDisplay() :
+  d0(0),
+  d1(0),
+  d2(0),
+  d3(0),
+  strobeA(0),
+  strobeB(0),
+  cmd(0),
+  rst(0),
+  native(true)
+{
+  initPins();
+}
+
+/**
  * Reset the LCD Controller via Reset pin.
  * Reinitialize Library
  * Initialize Display
@@ -71,6 +89,8 @@ void AlcDisplay::initPins()
   digitalWrite(d1,  LOW);
   digitalWrite(d2,  LOW);
   digitalWrite(d3,  LOW);
+  //DDRD |= 0b11110000;   // PD4–PD7 als Output
+  //PORTD &= 0b00001111;  // PD4–PD7 auf LOW
   
   pinMode(strobeA,  INPUT_PULLUP);
   pinMode(strobeB,  INPUT_PULLUP);
