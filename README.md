@@ -4,35 +4,77 @@ Library and Documentation for the Display of the ALC 8500/8000/3000 Charge Contr
 
 ![](pictures/Display%20Test.png)
 
-*Bootsplash of the Displaycontroller (source: me)*
+*Bootsplash of the display controller (source: me)*
 
-## Hardware Ebene
+This project consists of the reverse engeneering of the Protocol used to control the ALC *(**A**kku **L**ade **C**enter eng. Battery Charging Center)* Display. It was the preparation for my [ALC Firmware](https://github.com/MaBaTa/ALC-Firmware) development Project. Although it would be easier to replace the screen, i wanted to be able to control the original display, since it fits the style of the device and in this way anybody can use the alternative firmware without replacing it.
 
-Steuerpins PF0-2 sind pull-up und in in ruhe HIGH. Werden sie von einer der Seiten gegen Masse gezogen (open drain) ist das ein Auslösen.
+All references pertain to the **ALC 8500 2 Expert**, however the display is identical in the **ALC 8000** and **ALC 3000 PC**.
 
-Die Datenpins PD4-7 werden nur vom sender beschrieben und stellen das aktuelle Nibble Binär da.
+## Protocol
 
-| Pin | Funktion | Bedeutung                   |
-| --- | -------- | --------------------------- |
-| PD4 | Bit 1    | Binar Nibble                |
-| PD5 | Bit 2    | Binar Nibble                |
-| PD6 | Bit 3    | Binar Nibble                |
-| PD7 | Bit 4    | Binar Nibble                |
-| PF0 | StrobeA  | markiert ein unteres Nibble |
-| PF1 | CMD      | markiert eine Steuerbyte    |
-| PF2 | StrobeB  | markiert ein oberes Nibble  |
+### Hardware Level:
 
-##### Vorgegen beim senden eines Nibbles:
+The comunication between the main µC and the display controler consists of 7 pins:
 
-1. Nibble (Binärdaten) werden angelegt.
+| DisplayPin  | ATMEGA128 Pin | Function | Description            |
+| ----------- | ------------- | -------- | ---------------------- |
+| P3.0        | PD4           | Bit 1    | Binary Nibble          |
+| P3.1        | PD5           | Bit 2    | Binary Nibble          |
+| P3.2        | PD6           | Bit 3    | Binary Nibble          |
+| P3.3        | PD7           | Bit 4    | Binary Nibble          |
+| P4.0 & P1.0 | PF0           | StrobeA  | Indicates lower Nibble |
+| P4.1 & P1.1 | PF1           | CMD      | Indicates Controlbyte  |
+| P4.2 & P1.2 | PF2           | StrobeB  | Indicates upper Nibble |
 
-2. CMD wird gemeinsam mit einem der beiden Strobes angelegt (low).
+The data-pins P3.X are exclusively controlled externally, so they can be driven in Push/Pull mode. They are representing a nibble in paralell.
 
-3. Es wird auf das Acknowlegment des Displays gewartet, dies wird durch eine negative Flanke ausgehen vom Display auf dem anderen Strobe erkannt.
+For the control-pins P4.X, the two strobes are pulled high and driven low by both sides (pull up/open drain). The CMD line is normally high and, like the data-pins, only being read by the display.
 
-4. Eigener Strobe und ggf. CMD wird wieder realeased und der PullUp des Strobes angelegt.
+Additionaly the display can be reset by pulling down the reset-pin.
 
-5. Ab jetzt kann schon das nächste Nibble angelegt werden, das Display ist mit der verarbeitung beschäftigt. Der nächste Strobe darf allerdings erst ausgelöst werden wenn das Display seinerseits den Strobe aufgehoben hat.
+*This is controlled be the `GPIO Control` section of the Library.*
+
+### Procedure when sending a nibble: *`sendNibble()`*
+
+1. Nibbles (binary data) are applied.
+
+2. One strobe is asserted low (depending on upper or lower Nibble) optionally in conjunction with CMD line.
+
+3. Waiting for an acknowledgment from the display; this is detected via a negative-edge originating from the display, on the other strobe line.
+
+4. The own strobe and, if applicable, CMD are released again, and the strobe's pull-up is reapplied.
+
+5. From this point on, the next Nibble can already be applied; the display is busy processing the last one. However, the next strobe may not be triggered until the display has finished processing and therefore realising it's strobe.
+
+**Here an Example:**
+
+![](pictures/Protocol%20Sending%20Nibbles.png)
+
+### Frames:
+
+Based on this fundamental sending of nibbles, data frames are being constructed.
+
+If a complete Byte is required it is split into a high and low nibble. However, the order depends on whether a data byte or a command byte is being sent. For commands the lower 4 Bits are sent first `sendCmdByte()`, and for data the upper are first `sendDataByte()`. This could be another factor for the display to seperate data from commands.
+
+#### Building a Frame:
+
+A typical frame has this structure:
+
+```
+[HEADER] [CMD]  [ADDRESS]-[VAULE](-[VAULE])   ([ADDRESS]-[VAULE])...
+CmdByte  Data   CmdByte   Data
+8Bit     4Bit   8Bit      4/8Bit
+```
+
+- Header: Only 2 Types: `0xEF` for almost everything and `0xDF` changing mode.
+
+- Cmd: This decides witch Register is accessed (Digit, Text, LED) for normal commands. When changing mode it decides the mode.
+
+- Address: This specifies where to start if you do not want to overwrite the entire register.
+
+- Value: New Nibble to be Written in this Register on this Address. If writing Multiple each one takes the next higher Adress.
+
+---
 
 ## Ansteuerung
 
